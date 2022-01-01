@@ -47,8 +47,8 @@ project(rtsplib VERSION 1.0.0 LANGUAGES CXX C)
 
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+# conan_basic_setup(TARGETS)
 
 include(GNUInstallDirs)
 
@@ -66,6 +66,7 @@ configure_file(${PROJECT_SOURCE_DIR}/include/rtsplib/rtsplib_network.h.in ${CMAK
 #################################################################################################
 
 find_package(Threads REQUIRED)
+find_package(spdlog REQUIRED)
 
 
 set(RTSP_COMMON_HDRS
@@ -170,10 +171,7 @@ if(ENABLE_JUMBOFRAMES)
   target_compile_definitions(rtsplib PUBLIC MAX_RTP_PAYLOAD_SIZE=${MAX_RTP_PAYLOAD_SIZE})
 endif()
 
-target_link_libraries(rtsplib PRIVATE
-        CONAN_PKG::spdlog
-        Threads::Threads
-        )
+target_link_libraries(rtsplib PRIVATE spdlog::spdlog Threads::Threads)
 
 target_include_directories(rtsplib PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/include

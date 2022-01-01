@@ -42,8 +42,8 @@
 *************************************************************************************/
 
 
-#include "gtest/gtest.h"
-#include "spdlog/spdlog.h"
+#include <gtest/gtest.h>
+#include <spdlog/spdlog.h>
 
 #include <thread>
 #include <chrono>

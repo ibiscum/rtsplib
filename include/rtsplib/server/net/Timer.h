@@ -94,7 +94,7 @@ public:
     void handleTimerEvent();
 
 private:
-    int64_t getTimeNow();
+    static int64_t getTimeNow();
 
     std::mutex _mutex;
     std::unordered_map<TimerId, std::shared_ptr<Timer>> _timers;

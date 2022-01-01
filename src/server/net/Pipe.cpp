@@ -3,15 +3,12 @@
 
 #include "rtsplib/server/net/Pipe.h"
 #include "rtsplib/server/net/SocketUtil.h"
-#include "rtsplib/server/net/TcpSocket.h"
-#include <random>
+//#include "rtsplib/server/net/TcpSocket.h"
+//#include <random>
 
 using namespace xop;
 
-Pipe::Pipe()
-{
-
-}
+Pipe::Pipe() = default;
 
 bool Pipe::create()
 {

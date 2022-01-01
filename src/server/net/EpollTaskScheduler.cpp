@@ -5,7 +5,7 @@
 
 #if defined(__linux) || defined(__linux__) 
 #include <sys/epoll.h>
-#include <errno.h>
+#include <cerrno>
 #endif
 
 using namespace xop;
@@ -19,10 +19,7 @@ EpollTaskScheduler::EpollTaskScheduler(int id)
     this->updateChannel(_wakeupChannel);
 }
 
-EpollTaskScheduler::~EpollTaskScheduler()
-{
-	
-}
+EpollTaskScheduler::~EpollTaskScheduler() = default;
 
 void EpollTaskScheduler::updateChannel(ChannelPtr channel)
 {
@@ -52,7 +49,7 @@ void EpollTaskScheduler::updateChannel(ChannelPtr channel)
 #endif
 }
 
-void EpollTaskScheduler::update(int operation, ChannelPtr& channel)
+void EpollTaskScheduler::update(int operation, ChannelPtr& channel) const
 {
 #if defined(__linux) || defined(__linux__) 
     struct epoll_event event = {0};

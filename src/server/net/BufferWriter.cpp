@@ -2,16 +2,15 @@
 // 2018-5-15
 
 #include "rtsplib/server/net/BufferWriter.h"
+
+#include <utility>
 #include "rtsplib/server/net/Socket.h"
 #include "rtsplib/server/net/SocketUtil.h"
 
 using namespace xop;
 
-BufferWriter::BufferWriter(int capacity) 
-    : _maxQueueLength(capacity)
-	, _buffer(new std::queue<Packet>)
+BufferWriter::BufferWriter(int capacity) : _maxQueueLength(capacity),  _buffer(new std::queue<Packet>)
 {
-	
 }	
 
 bool BufferWriter::append(std::shared_ptr<char> data, uint32_t size, uint32_t index)
@@ -22,7 +21,7 @@ bool BufferWriter::append(std::shared_ptr<char> data, uint32_t size, uint32_t in
     if((int)_buffer->size() >= _maxQueueLength)
         return false;		
 
-    Packet pkt = {data, size, index};
+    Packet pkt = {std::move(data), size, index};
     _buffer->emplace(std::move(pkt));
 
     return true;

@@ -20,7 +20,7 @@ class EventLoop;
 class TcpServer 
 {
 public:	
-    TcpServer(EventLoop* loop, std::string ip, uint16_t port);
+    TcpServer(EventLoop* loop, const std::string& ip, uint16_t port);
     virtual ~TcpServer();  
     int start();
 
@@ -32,7 +32,7 @@ public:
 
 protected:
     virtual TcpConnection::Ptr newConnection(SOCKET sockfd);
-    void addConnection(SOCKET sockfd, TcpConnection::Ptr tcpConn);
+    void addConnection(SOCKET sockfd, const TcpConnection::Ptr& tcpConn);
     void removeConnection(SOCKET sockfd);
 
     EventLoop* _eventLoop; 

@@ -64,7 +64,7 @@ void TimerQueue::handleTimerEvent()
         {	
             TimerId timerId = _events.begin()->first.second;
             bool flag = _events.begin()->second->eventCallback();
-            if(flag == true)
+            if(flag)
             {
                 _events.begin()->second->setNextTimeout(timePoint);
                 auto timerPtr = std::move(_events.begin()->second);

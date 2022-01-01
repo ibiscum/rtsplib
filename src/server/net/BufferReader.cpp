@@ -3,7 +3,7 @@
 
 #include "rtsplib/server/net/BufferReader.h"
 #include "rtsplib/server/net/Socket.h"
-#include <cstring>
+//#include <cstring>
  
 using namespace xop;
 
@@ -15,10 +15,7 @@ BufferReader::BufferReader(uint32_t initialSize)
 	_buffer->resize(initialSize);
 }	
 
-BufferReader::~BufferReader()
-{
-	
-}
+BufferReader::~BufferReader() = default;
 
 int BufferReader::readFd(int sockfd)
 {	

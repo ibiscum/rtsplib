@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <chrono>
 #if defined(__linux) || defined(__linux__) 
-#include <sys/time.h>
+#include <ctime>
 #endif
 
 using namespace xop;
@@ -28,22 +28,19 @@ H265Source* H265Source::createNew(uint32_t frameRate)
     return new H265Source(frameRate);
 }
 
-H265Source::~H265Source()
-{
-	
-}
+H265Source::~H265Source() = default;
 
 string H265Source::getMediaDescription(uint16_t port)
 {
     char buf[100] = {0};
     sprintf(buf, "m=video %hu RTP/AVP 96", port);
 
-    return string(buf);
+    return {buf};
 }
 	
 string H265Source::getAttribute()
 {
-    return string("a=rtpmap:96 H265/90000");
+    return {"a=rtpmap:96 H265/90000"};
 }
 
 bool H265Source::handleFrame(MediaChannelId channelId, AVFrame frame)

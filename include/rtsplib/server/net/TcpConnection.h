@@ -57,7 +57,7 @@ protected:
     std::shared_ptr<xop::BufferWriter> _writeBufferPtr;
     std::shared_ptr<xop::Channel> _channelPtr;
     std::mutex _mutex;
-    std::atomic_bool _isClosed;
+    std::atomic_bool _isClosed{};
 
     DisconnectCallback _disconnectCB ;
     CloseCallback _closeCB;

@@ -49,12 +49,12 @@ EventLoop::EventLoop(int nThreads)
 
 EventLoop::~EventLoop()
 {
-    for (auto iter : _taskSchedulers)
+    for (const auto& iter : _taskSchedulers)
     {
         iter->stop();
     }
 
-    for (auto iter : _threads)
+    for (const auto& iter : _threads)
     {
         iter->join();
     }

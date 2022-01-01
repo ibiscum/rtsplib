@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <chrono>
 #if defined(__linux) || defined(__linux__)
-#include <sys/time.h>
+#include <ctime>
 #endif
 #include <iostream>
 using namespace xop;
@@ -28,10 +28,7 @@ H264Source* H264Source::createNew(uint32_t frameRate)
     return new H264Source(frameRate);
 }
 
-H264Source::~H264Source()
-{
-
-}
+H264Source::~H264Source() = default;
 
 string H264Source::getMediaDescription(uint16_t port)
 {

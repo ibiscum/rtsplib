@@ -51,10 +51,10 @@ public:
     void setMediaDescribeSDPAddon(std::string sdp_addon)
     { _sdp_addon = sdp_addon; }
 
-    std::string getSdpMessage(std::string sessionName="");
+    std::string getSdpMessage(const std::string& sessionName="");
     MediaSource* getMediaSource(MediaChannelId channelId); 
     bool handleFrame(MediaChannelId channelId, AVFrame frame);
-    bool addClient(SOCKET rtspfd, std::shared_ptr<RtpConnection> rtpConnPtr);
+    bool addClient(SOCKET rtspfd, const std::shared_ptr<RtpConnection>& rtpConnPtr);
     void removeClient(SOCKET rtspfd);
 
     MediaSessionId getMediaSessionId()
@@ -97,10 +97,10 @@ private:
     std::map<SOCKET, std::weak_ptr<RtpConnection>> _clients;
 
     bool _isMulticast = false;
-    uint16_t _multicastPort[MAX_MEDIA_CHANNEL];
+    uint16_t _multicastPort[MAX_MEDIA_CHANNEL]{};
     std::string _multicastIp;
 
-    std::atomic_bool _gopCacheEnabled, _hasNewClient;
+    std::atomic_bool _gopCacheEnabled{}, _hasNewClient{};
     AVFrame _gopCache;
 
     static std::atomic_uint _lastMediaSessionId;

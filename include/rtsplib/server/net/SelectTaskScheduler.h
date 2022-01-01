@@ -33,9 +33,9 @@ public:
     bool handleEvent(int timeout);
 	
 private:
-    fd_set _fdReadBackup;
-    fd_set _fdWriteBackup;
-    fd_set _fdExpBackup;
+    fd_set _fdReadBackup{};
+    fd_set _fdWriteBackup{};
+    fd_set _fdExpBackup{};
     int _maxfd = 0;
 
     bool _isfdReadReset = false;

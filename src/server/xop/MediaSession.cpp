@@ -7,6 +7,7 @@
 #include <ctime>
 #include <map>
 #include <forward_list>
+#include <utility>
 #include "rtsplib/server/net/Logger.h"
 #include "rtsplib/server/net/NetInterface.h"
 #include "rtsplib/server/net/SocketUtil.h"
@@ -19,7 +20,7 @@ using namespace std;
 std::atomic_uint MediaSession::_lastMediaSessionId(1);
 
 MediaSession::MediaSession(std::string rtspUrlSuffxx)
-    : _suffix(rtspUrlSuffxx)
+    : _suffix(std::move(rtspUrlSuffxx))
     , _mediaSources(2)
     , _buffer(2)
 {
@@ -27,9 +28,9 @@ MediaSession::MediaSession(std::string rtspUrlSuffxx)
     _hasNewClient = false;
     _sessionId = ++_lastMediaSessionId;
 
-    for(int n=0; n<MAX_MEDIA_CHANNEL; n++)
+    for(unsigned short & n : _multicastPort)
     {
-        _multicastPort[n] = 0;
+        n = 0;
     }
 }
 
@@ -40,7 +41,7 @@ MediaSession* MediaSession::createNew(std::string rtspUrlSuffxx)
 
 MediaSession::~MediaSession()
 {
-	if (_multicastIp != "")
+	if (!_multicastIp.empty())
 	{
 		MulticastAddr::instance().release(_multicastIp);
 	}
@@ -48,7 +49,7 @@ MediaSession::~MediaSession()
 
 bool MediaSession::addMediaSource(MediaChannelId channelId, MediaSource* source)
 {
-    source->setSendFrameCallback([this](MediaChannelId channelId, RtpPacket pkt) {
+    source->setSendFrameCallback([this](MediaChannelId channelId, const RtpPacket& pkt) {
         std::forward_list<std::shared_ptr<RtpConnection>> clients;
         std::map<int, RtpPacket> packets;
         {
@@ -66,7 +67,7 @@ bool MediaSession::addMediaSource(MediaChannelId channelId, MediaSource* source)
                     if (packets.find(id) == packets.end())
                     {
                         RtpPacket tmpPkt;
-                        if (packets.size() != 0)
+                        if (!packets.empty())
                         {
                             memcpy(tmpPkt.data.get(), pkt.data.get(), pkt.size);
                         }
@@ -88,7 +89,7 @@ bool MediaSession::addMediaSource(MediaChannelId channelId, MediaSource* source)
         }
         
         int count = 0;
-        for(auto iter : clients)
+        for(const auto& iter : clients)
         {
             int ret = 0;
             int id = iter->getId();
@@ -132,7 +133,7 @@ bool MediaSession::startMulticast()
     }
 
     _multicastIp = MulticastAddr::instance().getAddr();
-    if (_multicastIp == "")
+    if (_multicastIp.empty())
     {
         return false;
     }
@@ -145,9 +146,9 @@ bool MediaSession::startMulticast()
     return true;
 }
 
-std::string MediaSession::getSdpMessage(std::string sessionName)
+std::string MediaSession::getSdpMessage(const std::string& sessionName)
 {
-    if(_sdp != "")
+    if(!_sdp.empty())
         return _sdp;
 
     if(_mediaSources.empty())
@@ -161,9 +162,9 @@ std::string MediaSession::getSdpMessage(std::string sessionName)
 			"o=- 9%ld 1 IN IP4 %s\r\n"
             "t=0 0\r\n"
             "a=control:*\r\n" ,
-            (long)std::time(NULL), ip.c_str()); 
+            (long)std::time(nullptr), ip.c_str());
 
-    if(sessionName != "")
+    if(!sessionName.empty())
     {
         snprintf(buf+strlen(buf), sizeof(buf)-strlen(buf), 
                 "s=%s\r\n",
@@ -262,7 +263,7 @@ bool MediaSession::handleFrame(MediaChannelId channelId, AVFrame frame)
     return true;
 }
 
-bool MediaSession::addClient(SOCKET rtspfd, std::shared_ptr<RtpConnection> rtpConnPtr)
+bool MediaSession::addClient(SOCKET rtspfd, const std::shared_ptr<RtpConnection>& rtpConnPtr)
 {
     std::lock_guard<std::mutex> lock(_mtxMap);
     auto iter = _clients.find (rtspfd);

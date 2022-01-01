@@ -102,9 +102,9 @@ namespace RK {
     class RtspPlayer {
     public:
         typedef std::shared_ptr<RtspPlayer> Ptr;
-        RtspPlayer(RecvBufferFn recv_cb = NULL, std::string name = "", int rtp_port = 12000, int rtcp_port = 13000);
+        RtspPlayer(RecvBufferFn recv_cb = NULL, const std::string& name = "", int rtp_port = 12000, int rtcp_port = 13000);
         ~RtspPlayer();
-        bool Play(std::string url);
+        bool Play(const std::string& url);
         void Stop();
         ImgProps GetImageProperties();
 
@@ -113,7 +113,7 @@ namespace RK {
     protected:
         bool NetworkInit(const char *ip, const short port);
         bool RTPSocketInit(int videoPort, int audioPort);
-        bool getIPFromUrl(std::string url, char *ip, unsigned short *port);
+        static bool getIPFromUrl(const std::string& url, char *ip, unsigned short *port);
         void EventInit();
         bool HandleRtspMsg(const char *buf, ssize_t bufsize);
         void HandleRtspState();
@@ -121,45 +121,45 @@ namespace RK {
         //void HandleRtpMsg(const char *buf, ssize_t bufsize);
         
         // rtsp message send/handle function
-        void SendDescribe(std::string url);
+        void SendDescribe(const std::string& url) const;
         void HandleDescribe(const char *buf, ssize_t bufsize);
-        void RtspSetup(const std::string url, int track, int CSeq, char *proto, short rtp_port, short rtcp_port);
+        void RtspSetup(const std::string& url, int track, int CSeq, char *proto, short rtp_port, short rtcp_port) const;
         void SendVideoSetup();
         bool HandleVideoSetup(const char *buf, ssize_t bufsize);
-        void SendPlay(const std::string url);
+        void SendPlay(const std::string& url) const;
         
-        std::vector<std::string> GetSDPFromMessage(const char *buffer, size_t length, const char *pattern);
+        static std::vector<std::string> GetSDPFromMessage(const char *buffer, size_t length, const char *pattern);
     private:
-	    bool PortIsOpen(int port);
+	    static bool PortIsOpen(int port);
         bool PlayLoop(const char* ip, unsigned short port);
 
-        struct ImgProps _ImgProps;
+        struct ImgProps _ImgProps{};
 
-        std::atomic<bool> _Terminated;
-        std::atomic<bool> _NetWorked;
+        std::atomic<bool> _Terminated{};
+        std::atomic<bool> _NetWorked{};
         std::shared_ptr<std::thread> _PlayThreadPtr;
-        std::atomic<RtspPlayerState> _PlayState;
-        fd_set _readfd;
-        fd_set _writefd;
-        fd_set _errorfd;
+        std::atomic<RtspPlayerState> _PlayState{};
+        fd_set _readfd{};
+        fd_set _writefd{};
+        fd_set _errorfd{};
 
         // default ports
         int _rtp_port = 12000;
         int _rtcp_port = 13000;
 
         std::string _rtspurl;
-        int _video_rtp_port;
-        int _video_rtcp_port;
+        int _video_rtp_port{};
+        int _video_rtcp_port{};
 
-        char _rtspip[256];
+        char _rtspip[256]{};
         
         int _Eventfd = 0;
         int _RtspSocket = 0;
         int _RtpVideoSocket = 0;
         int _RtpAudioSocket = 0;
-        struct sockaddr_in _RtpVideoAddr;
+        struct sockaddr_in _RtpVideoAddr{};
         
-        struct sdp_payload *_SdpParser;
+        struct sdp_payload *_SdpParser{};
         
         long _RtspSessionID = 0;
         

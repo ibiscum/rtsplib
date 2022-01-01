@@ -30,7 +30,7 @@ public:
 	void* Alloc(uint32_t size);
 	void Free(void* ptr);
 
-	size_t BolckSize() const
+	size_t BlockSize() const
 	{
 		return _blockSize;
 	}
@@ -50,7 +50,7 @@ public:
 	~MemoryManager();
 
 	void* Alloc(uint32_t size);
-	void Free(void* ptr);
+	static void Free(void* ptr);
 
 private:
 	MemoryManager();

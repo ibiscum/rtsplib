@@ -7,21 +7,19 @@ set(TEST_SOURCES
 add_executable(rtsplib_test ${TEST_SOURCES})
 set_target_properties(rtsplib_test PROPERTIES CXX_STANDARD 11)
 
-target_link_libraries(rtsplib_test PUBLIC
-        rtsplib
-        CONAN_PKG::spdlog
-        )
+target_link_libraries(rtsplib_test PRIVATE rtsplib)
+target_link_libraries(rtsplib_test PUBLIC spdlog::spdlog gtest)
 
 # conan weirdness ...
-if (TARGET CONAN_PKG::GTest)
-  target_link_libraries(rtsplib_test PUBLIC CONAN_PKG::GTest)
-else()
-  target_link_libraries(rtsplib_test PUBLIC CONAN_PKG::gtest)
-endif()
+#if (TARGET CONAN_PKG::GTest)
+#  target_link_libraries(rtsplib_test PUBLIC CONAN_PKG::GTest)
+#else()
+#  target_link_libraries(rtsplib_test PUBLIC CONAN_PKG::gtest)
+#endif()
 
 target_include_directories(rtsplib_test
         PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_BINARY_DIR}/include
         ${PROJECT_BINARY_DIR}/src
         ${PROJECT_SOURCE_DIR}/src
         )

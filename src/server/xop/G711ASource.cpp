@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <chrono>
 #if defined(__linux) || defined(__linux__) 
-#include <sys/time.h>
+#include <ctime>
 #endif 
 
 using namespace xop;
@@ -26,10 +26,7 @@ G711ASource* G711ASource::createNew()
     return new G711ASource();
 }
 
-G711ASource::~G711ASource()
-{
-	
-}
+G711ASource::~G711ASource() = default;
 
 string G711ASource::getMediaDescription(uint16_t port)
 {

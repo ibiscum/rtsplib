@@ -1,7 +1,9 @@
 ﻿#include "rtsplib/server/net/Acceptor.h"
+
+#include <utility>
 #include "rtsplib/server/net/EventLoop.h"
 #include "rtsplib/server/net/SocketUtil.h"
-#include "rtsplib/server/net/Logger.h"
+//#include "rtsplib/server/net/Logger.h"
 
 using namespace xop;
 
@@ -19,7 +21,7 @@ Acceptor::Acceptor(EventLoop* eventLoop, std::string ip, uint16_t port)
     SocketUtil::setReuseAddr(_tcpSocket->fd());
     SocketUtil::setReusePort(_tcpSocket->fd());
     SocketUtil::setNonBlock(_tcpSocket->fd());
-    _tcpSocket->bind(ip, port);
+    _tcpSocket->bind(std::move(ip), port);
 }
 
 Acceptor::~Acceptor()

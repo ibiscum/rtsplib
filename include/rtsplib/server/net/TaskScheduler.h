@@ -22,7 +22,7 @@ public:
 
     void start();
     void stop();
-    TimerId addTimer(TimerEvent timerEvent, uint32_t msec);
+    TimerId addTimer(const TimerEvent& timerEvent, uint32_t msec);
     void removeTimer(TimerId timerId);
     bool addTriggerEvent(TriggerEvent callback);
 

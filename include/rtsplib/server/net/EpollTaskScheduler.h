@@ -23,7 +23,7 @@ public:
     bool handleEvent(int timeout);
 
 private:
-    void update(int operation, ChannelPtr& channel);
+    void update(int operation, ChannelPtr& channel) const;
 
     int _epollfd = -1;
     std::mutex _mutex;

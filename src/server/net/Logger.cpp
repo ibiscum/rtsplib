@@ -6,7 +6,7 @@
 #endif
 
 #include "rtsplib/server/net/Logger.h"
-#include <stdarg.h>
+#include <cstdarg>
 #include <iostream>
 #include "rtsplib/server/net/Timestamp.h"
 

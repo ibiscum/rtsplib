@@ -5,11 +5,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 #include "rtsplib/server/xop/AACSource.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstdio>
 #include <chrono>
 #if defined(__linux) || defined(__linux__)
-#include <sys/time.h>
+#include <ctime>
 #endif
 
 using namespace xop;
@@ -30,10 +30,7 @@ AACSource* AACSource::createNew(uint32_t sampleRate, uint32_t channels, bool has
     return new AACSource(sampleRate, channels, hasADTS);
 }
 
-AACSource::~AACSource()
-{
-
-}
+AACSource::~AACSource() = default;
 
 string AACSource::getMediaDescription(uint16_t port)
 {

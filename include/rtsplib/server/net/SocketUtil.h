@@ -13,7 +13,7 @@ namespace xop
 class SocketUtil
 {
 public:
-    static bool bind(SOCKET sockfd, std::string ip, uint16_t port);
+    static bool bind(SOCKET sockfd, const std::string& ip, uint16_t port);
     static void setNonBlock(SOCKET fd);
     static void setBlock(SOCKET fd, int writeTimeout=0);
     static void setReuseAddr(SOCKET fd);
@@ -27,7 +27,7 @@ public:
     static uint16_t getPeerPort(SOCKET sockfd);
     static int getPeerAddr(SOCKET sockfd, struct sockaddr_in *addr);
     static void close(SOCKET sockfd);
-    static bool connect(SOCKET sockfd, std::string ip, uint16_t port, int timeout=0);
+    static bool connect(SOCKET sockfd, const std::string& ip, uint16_t port, int timeout=0);
 };
 
 }

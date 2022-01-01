@@ -18,10 +18,10 @@ public:
     virtual ~TcpSocket();
 
     SOCKET create();
-    bool bind(std::string ip, uint16_t port);
-    bool listen(int backlog);
-    SOCKET accept();
-    bool connect(std::string ip, uint16_t port, int timeout=0);
+    bool bind(const std::string& ip, uint16_t port) const;
+    bool listen(int backlog) const;
+    SOCKET accept() const;
+    bool connect(const std::string& ip, uint16_t port, int timeout=0) const;
     void close();
     void shutdownWrite();
 

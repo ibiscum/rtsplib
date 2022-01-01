@@ -11,7 +11,7 @@ std::string NetInterface::getLocalIPAddress()
 #if defined(__linux) || defined(__linux__) 
     SOCKET sockfd = 0;
     char buf[512] = { 0 };
-    struct ifconf ifconf;
+    struct ifconf ifconf{};
     struct ifreq  *ifreq;
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == INVALID_SOCKET)

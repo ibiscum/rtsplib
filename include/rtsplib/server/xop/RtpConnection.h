@@ -32,7 +32,7 @@ public:
 
     bool setupRtpOverTcp(MediaChannelId channelId, uint16_t rtpChannel, uint16_t rtcpChannel);
     bool setupRtpOverUdp(MediaChannelId channelId, uint16_t rtpPort, uint16_t rtcpPort);
-    bool setupRtpOverMulticast(MediaChannelId channelId, std::string ip, uint16_t port);
+    bool setupRtpOverMulticast(MediaChannelId channelId, const std::string& ip, uint16_t port);
 
     uint32_t getRtpSessionId() const
     { return (uint32_t)((size_t)(this)); }
@@ -59,7 +59,7 @@ public:
     void teardown();
 
     std::string getRtpInfo(const std::string& rtspUrl);
-    int sendRtpPacket(MediaChannelId channelId, RtpPacket pkt, bool isGOPCache = false);
+    int sendRtpPacket(MediaChannelId channelId, const RtpPacket& pkt, bool isGOPCache = false);
 
     bool isClosed() const
     { return _isClosed; }
@@ -76,9 +76,9 @@ private:
     friend class RtspConnection;
     friend class MediaSession;
     void setFrameType(uint8_t frameType = 0);
-    void setRtpHeader(MediaChannelId channelId, RtpPacket pkt);
-    int sendRtpOverTcp(MediaChannelId channelId, RtpPacket pkt);
-    int sendRtpOverUdp(MediaChannelId channelId, RtpPacket pkt);
+    void setRtpHeader(MediaChannelId channelId, const RtpPacket& pkt);
+    int sendRtpOverTcp(MediaChannelId channelId, const RtpPacket& pkt);
+    int sendRtpOverUdp(MediaChannelId channelId, const RtpPacket& pkt);
 
     RtspConnection* _rtspConnection;
 
@@ -89,15 +89,15 @@ private:
     bool _isClosed = false, _hasIDRFrame = false, _hasGOPFrame = false;
 
     uint8_t _frameType = 0;
-    uint16_t _localRtpPort[MAX_MEDIA_CHANNEL];
-    uint16_t _localRtcpPort[MAX_MEDIA_CHANNEL];
-    SOCKET _rtpfd[MAX_MEDIA_CHANNEL], _rtcpfd[MAX_MEDIA_CHANNEL];
+    uint16_t _localRtpPort[MAX_MEDIA_CHANNEL]{};
+    uint16_t _localRtcpPort[MAX_MEDIA_CHANNEL]{};
+    SOCKET _rtpfd[MAX_MEDIA_CHANNEL]{}, _rtcpfd[MAX_MEDIA_CHANNEL]{};
 
     // client
-    struct sockaddr_in _peerAddr;
-    struct sockaddr_in _peerRtpAddr[MAX_MEDIA_CHANNEL];
-    struct sockaddr_in _peerRtcpAddr[MAX_MEDIA_CHANNEL];
-    MediaChannelInfo _mediaChannelInfo[MAX_MEDIA_CHANNEL];
+    struct sockaddr_in _peerAddr{};
+    struct sockaddr_in _peerRtpAddr[MAX_MEDIA_CHANNEL]{};
+    struct sockaddr_in _peerRtcpAddr[MAX_MEDIA_CHANNEL]{};
+    MediaChannelInfo _mediaChannelInfo[MAX_MEDIA_CHANNEL]{};
 
     const uint8_t kGOPCache = 200;
 };

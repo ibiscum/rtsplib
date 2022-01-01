@@ -20,7 +20,7 @@ public:
     int writefd() const { return _pipefd[1]; }
 	
 private:
-    int _pipefd[2];
+    int _pipefd[2]{};
 };
 
 }
