@@ -12,10 +12,7 @@ template<typename T>
 class ThreadSafeQueue
 {
 public:
-    ThreadSafeQueue()
-    {
-        
-    }
+    ThreadSafeQueue() = default;
     
     ThreadSafeQueue(ThreadSafeQueue const& other)
     {
@@ -23,10 +20,7 @@ public:
         _dataQueue = other._dataQueue;
     }
 
-    ~ThreadSafeQueue()
-    {
-       
-    }
+    ~ThreadSafeQueue() = default;
             
     void push(T value)
     {

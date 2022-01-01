@@ -14,7 +14,7 @@ namespace xop
 class TcpSocket
 {
 public:
-    TcpSocket(SOCKET sockfd=-1);
+    explicit TcpSocket(SOCKET sockfd=-1);
     virtual ~TcpSocket();
 
     SOCKET create();

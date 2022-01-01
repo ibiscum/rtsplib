@@ -11,7 +11,7 @@
 using namespace xop;
 using namespace std;
 
-RtspServer::RtspServer(EventLoop* loop, std::string ip, uint16_t port)
+RtspServer::RtspServer(EventLoop* loop, const std::string& ip, uint16_t port)
 	: TcpServer(loop, ip, port)
 {
 #if KEEP_ALIVE_ON    
@@ -37,10 +37,7 @@ RtspServer::RtspServer(EventLoop* loop, std::string ip, uint16_t port)
     }
 }
 
-RtspServer::~RtspServer()
-{
-	
-}
+RtspServer::~RtspServer() = default;
 
 MediaSessionId RtspServer::addMediaSession(MediaSession* session)
 {
@@ -59,7 +56,7 @@ MediaSessionId RtspServer::addMediaSession(MediaSession* session)
     return sessionId;
 }
 
-void RtspServer::removeMediaSession(MediaSessionId sessionId)
+int RtspServer::removeMediaSession(MediaSessionId sessionId)
 {
     std::lock_guard<std::mutex> locker(_mtxSessionMap);
 
@@ -69,6 +66,7 @@ void RtspServer::removeMediaSession(MediaSessionId sessionId)
         _rtspSuffixMap.erase(iter->second->getRtspUrlSuffix());
         _mediaSessions.erase(sessionId);
     }
+    return 0;
 }
 
 MediaSessionPtr RtspServer::lookMediaSession(const std::string& suffix)
@@ -98,7 +96,7 @@ MediaSessionPtr RtspServer::lookMediaSession(MediaSessionId sessionId)
     return nullptr;
 }
 
-bool RtspServer::pushFrame(MediaSessionId sessionId, MediaChannelId channelId, AVFrame frame)
+bool RtspServer::pushFrame(MediaSessionId sessionId, MediaChannelId_t channelId, AVFrame frame)
 {
     std::shared_ptr<MediaSession> sessionPtr = nullptr;
 

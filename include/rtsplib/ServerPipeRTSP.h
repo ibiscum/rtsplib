@@ -23,11 +23,11 @@
 #                                                                                   #
 #  * The software is permitted to be used internally only by the research group     #
 #    MITI and CAMPAR and any associated/collaborating groups and/or individuals.    #
-#  * The software is provided for your internal use only and you may                #
+#  * The software is provided for your internal use only, and you may                #
 #    not sell, rent, lease or sublicense the software to any other entity           #
 #    without specific prior written permission.                                     #
 #    You acknowledge that the software in source form remains a confidential        #
-#    trade secret of the research group MITI and therefore you agree not to         #
+#    trade secret of the research group MITI, and therefore you agree not to         #
 #    attempt to reverse-engineer, decompile, disassemble, or otherwise develop      #
 #    source code for the software or knowingly allow others to do so.               #
 #  * Redistributions of source code must retain the above copyright notice,         #
@@ -69,8 +69,8 @@ namespace rtsplib
     private:
       bool init_Loop(int _width, int _height, int _bytesPerPixel);
 
-      int startCodePosition(const unsigned char* buffer, int maxSize, int offset);
-      void get_NalPackage(unsigned char* buffer, int maxSize, int *head, int *tail, int *length);
+      static int startCodePosition(const unsigned char* buffer, int maxSize, int offset);
+      static void get_NalPackage(unsigned char* buffer, int maxSize, int *head, int *tail, int *length);
 
       std::string m_ipAddress;
 
@@ -80,7 +80,7 @@ namespace rtsplib
       int m_height{0};
       int m_bytesPerPixel{0};
 
-      xop::MediaSessionId m_sessionId;
+      xop::MediaSessionId m_sessionId{};
       std::shared_ptr<xop::EventLoop> m_eventLoop;
       std::unique_ptr<xop::RtspServer> m_server;
       std::thread m_rtspThread;

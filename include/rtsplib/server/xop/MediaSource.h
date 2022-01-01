@@ -19,19 +19,19 @@ namespace xop
 class MediaSource
 {
 public:
-    typedef std::function<bool (MediaChannelId channelId, RtpPacket pkt)> SendFrameCallback;
+    typedef std::function<bool (MediaChannelId_t channelId, RtpPacket pkt)> SendFrameCallback;
 
-    MediaSource() {}
-    virtual ~MediaSource() {}
+    MediaSource() = default;
+    virtual ~MediaSource() = default;
 
     virtual MediaType getMediaType() const
     { return _mediaType; }
 
-    virtual std::string getMediaDescription(uint16_t port=0) = 0;
+    virtual std::string getMediaDescription(uint16_t port) = 0;
 
     virtual std::string getAttribute()  = 0;
 
-    virtual bool handleFrame(MediaChannelId channelId, AVFrame frame) = 0;
+    virtual bool handleFrame(MediaChannelId_t channelId, AVFrame frame) = 0;
     virtual void setSendFrameCallback(const SendFrameCallback cb)
     { _sendFrameCallback = cb; }
 

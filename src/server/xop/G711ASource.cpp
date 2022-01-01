@@ -41,7 +41,7 @@ string G711ASource::getAttribute()
     return string("a=rtpmap:8 PCMA/8000/1");
 }
 
-bool G711ASource::handleFrame(MediaChannelId channelId, AVFrame frame)
+bool G711ASource::handleFrame(MediaChannelId_t channelId, AVFrame frame)
 {
     if (frame.size > MAX_RTP_PAYLOAD_SIZE)
     {

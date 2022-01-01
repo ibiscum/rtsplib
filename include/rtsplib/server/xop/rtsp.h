@@ -26,15 +26,15 @@ struct RtspUrlInfo
 class Rtsp
 {
 public:
-    virtual ~Rtsp() {};
+    virtual ~Rtsp() = default;;
 
-    virtual MediaSessionId addMeidaSession(MediaSession* session)
+    virtual MediaSessionId addMediaSession(MediaSession* session)
     { return 0; }
 
-    virtual void removeMeidaSession(MediaSessionId sessionId)
-    { return; }
+    virtual int removeMediaSession(MediaSessionId sessionId)
+    { return 0; }
 
-    virtual bool pushFrame(MediaSessionId sessionId, MediaChannelId channelId, AVFrame frame)
+    virtual bool pushFrame(MediaSessionId sessionId, MediaChannelId_t channelId, AVFrame frame)
     { return false;}
 
     virtual void setVersion(std::string version) // SDP Session Name
@@ -46,7 +46,7 @@ public:
     virtual std::string getRtspUrl()
     { return _rtspUrlInfo.url; }
 
-	bool parseRtspUrl(std::string url)
+	bool parseRtspUrl(const std::string& url)
 	{
 		char ip[100] = { 0 };
 		char suffix[100] = { 0 };

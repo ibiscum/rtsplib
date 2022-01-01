@@ -7,6 +7,7 @@
 #include <functional>
 #include <queue>
 #include <tuple>
+#include <utility>
 
 #include "rtsplib/rtsplib_config.h"
 
@@ -24,11 +25,11 @@
 #                                                                                   #
 #  * The software is permitted to be used internally only by the research group     #
 #    MITI and CAMPAR and any associated/collaborating groups and/or individuals.    #
-#  * The software is provided for your internal use only and you may                #
+#  * The software is provided for your internal use only, and you may                #
 #    not sell, rent, lease or sublicense the software to any other entity           #
 #    without specific prior written permission.                                     #
 #    You acknowledge that the software in source form remains a confidential        #
-#    trade secret of the research group MITI and therefore you agree not to         #
+#    trade secret of the research group MITI, and therefore you agree not to         #
 #    attempt to reverse-engineer, decompile, disassemble, or otherwise develop      #
 #    source code for the software or knowingly allow others to do so.               #
 #  * Redistributions of source code must retain the above copyright notice,         #
@@ -63,7 +64,7 @@ namespace rtsplib
 	class RTSPLIB_EXPORT ClientPipeRTSP
 	{
 	public:
-		ClientPipeRTSP(std::string rtspAddress);
+		explicit ClientPipeRTSP(std::string rtspAddress);
 		~ClientPipeRTSP();
 
 		bool startClient(int rtp_port = 12000, int rtcp_port = 13000);
@@ -72,34 +73,34 @@ namespace rtsplib
 
         void setFrameCallback(RecvCallFn cb)
         {
-            m_recv_cb = cb;
+            m_recv_cb = std::move(cb);
         }
 
         void setStartStreamCallback(StartStreammCallFn cb)
         {
-            m_start_stream_cb = cb;
+            m_start_stream_cb = std::move(cb);
         }
 
 
-        int getWidth() {
+        int getWidth() const {
             return m_width;
         }
 
-        int getHeight() {
+        int getHeight() const {
             return m_height;
         }
 
-        int getBytesPerPixel() {
+        int getBytesPerPixel() const {
             return m_bytesPerPixel;
         }
 
-        bool isRunning() {
+        bool isRunning() const {
             return m_isRunning;
         }
 
 	private:
 
-		int cvtBuffer(uint8_t *buf, ssize_t bufsize, uint8_t *outBuf, ssize_t *outLength);
+		static int cvtBuffer(uint8_t *buf, ssize_t bufsize, uint8_t *outBuf, ssize_t *outLength);
 
         RecvCallFn m_recv_cb{nullptr};
         StartStreammCallFn m_start_stream_cb{nullptr};
@@ -108,7 +109,7 @@ namespace rtsplib
         int m_height{0};
         int m_width{0};
         int m_bytesPerPixel{0};
-        int m_dataSize;
+        int m_dataSize{};
         uint8_t* m_frameBuffer{nullptr};
 
         bool m_isRunning = false;

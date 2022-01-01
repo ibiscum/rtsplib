@@ -1,6 +1,6 @@
 # rtsplib
 
-rtsplib provides a rtsp client/server for h264 transimssion
+rtsplib provides a rtsp client/server for h264 transmission
 
 ## Requirements
 

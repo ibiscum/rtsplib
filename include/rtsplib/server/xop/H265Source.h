@@ -14,7 +14,7 @@ class H265Source : public MediaSource
 {
 public:
     static H265Source* createNew(uint32_t frameRate=25);
-    virtual ~H265Source();
+    ~H265Source() override;
 
     void setFrameRate(uint32_t frameRate)
     { _frameRate = frameRate; }
@@ -22,16 +22,16 @@ public:
     uint32_t getFrameRate() const 
     { return _frameRate; }
 
-    virtual std::string getMediaDescription(uint16_t port=0); 
+    std::string getMediaDescription(uint16_t port) override;
 
-    virtual std::string getAttribute(); 
+    std::string getAttribute() override;
 
-    bool handleFrame(MediaChannelId channelId, AVFrame frame);
+    bool handleFrame(MediaChannelId_t channelId, AVFrame frame) override;
 
     static uint32_t getTimeStamp();
 	
 private:
-    H265Source(uint32_t frameRate);
+    explicit H265Source(uint32_t frameRate);
 
     uint32_t _frameRate = 25;
 };

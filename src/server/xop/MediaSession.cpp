@@ -19,8 +19,8 @@ using namespace std;
 
 std::atomic_uint MediaSession::_lastMediaSessionId(1);
 
-MediaSession::MediaSession(std::string rtspUrlSuffxx)
-    : _suffix(std::move(rtspUrlSuffxx))
+MediaSession::MediaSession(std::string rtspUrlSuffix)
+    : _suffix(std::move(rtspUrlSuffix))
     , _mediaSources(2)
     , _buffer(2)
 {
@@ -34,9 +34,9 @@ MediaSession::MediaSession(std::string rtspUrlSuffxx)
     }
 }
 
-MediaSession* MediaSession::createNew(std::string rtspUrlSuffxx)
+MediaSession* MediaSession::createNew(std::string rtspUrlSuffix)
 {
-    return new MediaSession(std::move(rtspUrlSuffxx));
+    return new MediaSession(std::move(rtspUrlSuffix));
 }
 
 MediaSession::~MediaSession()
@@ -47,9 +47,9 @@ MediaSession::~MediaSession()
 	}
 }
 
-bool MediaSession::addMediaSource(MediaChannelId channelId, MediaSource* source)
+bool MediaSession::addMediaSource(MediaChannelId_t channelId, MediaSource* source)
 {
-    source->setSendFrameCallback([this](MediaChannelId channelId, const RtpPacket& pkt) {
+    source->setSendFrameCallback([this](MediaChannelId_t channelId, const RtpPacket& pkt) {
         std::forward_list<std::shared_ptr<RtpConnection>> clients;
         std::map<int, RtpPacket> packets;
         {
@@ -119,7 +119,7 @@ bool MediaSession::addMediaSource(MediaChannelId channelId, MediaSource* source)
     return true;
 }
 
-bool MediaSession::removeMediaSource(MediaChannelId channelId)
+bool MediaSession::removeMediaSource(MediaChannelId_t channelId)
 {
     _mediaSources[channelId] = nullptr;
     return true;
@@ -215,7 +215,7 @@ std::string MediaSession::getSdpMessage(const std::string& sessionName)
     return _sdp;
 }
 
-MediaSource* MediaSession::getMediaSource(MediaChannelId channelId)
+MediaSource* MediaSession::getMediaSource(MediaChannelId_t channelId)
 {
 	if (_mediaSources[channelId])
 	{
@@ -225,7 +225,7 @@ MediaSource* MediaSession::getMediaSource(MediaChannelId channelId)
     return nullptr;
 }
 
-bool MediaSession::handleFrame(MediaChannelId channelId, AVFrame frame)
+bool MediaSession::handleFrame(MediaChannelId_t channelId, AVFrame frame)
 {
     std::lock_guard<std::mutex> lock(_mutex);
     if(_mediaSources[channelId])

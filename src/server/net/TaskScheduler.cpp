@@ -7,7 +7,7 @@ using namespace xop;
 
 TaskScheduler::TaskScheduler(int id)
     : _id(id), _shutdown(false), _wakeupPipe(std::make_shared<Pipe>()),
-      _triggerEvents(new TriggerEventQueue(kMaxTriggetEvents)) {
+      _triggerEvents(new TriggerEventQueue(kMaxTriggerEvents)) {
   if (_wakeupPipe->create()) {
     _wakeupChannel.reset(new Channel(_wakeupPipe->readfd()));
     _wakeupChannel->enableReading();
@@ -36,7 +36,7 @@ void TaskScheduler::start() {
 
 void TaskScheduler::stop() {
   _shutdown = true;
-  char event = kTriggetEvent;
+  char event = kTriggerEvent;
   _wakeupPipe->write(&event, 1);
 }
 
@@ -50,9 +50,9 @@ void TaskScheduler::removeTimer(TimerId timerId) {
 }
 
 bool TaskScheduler::addTriggerEvent(TriggerEvent callback) {
-  if (_triggerEvents->size() < kMaxTriggetEvents) {
+  if (_triggerEvents->size() < kMaxTriggerEvents) {
     std::lock_guard<std::mutex> lock(_mutex);
-    char event = kTriggetEvent;
+    char event = kTriggerEvent;
     _triggerEvents->push(std::move(callback));
     _wakeupPipe->write(&event, 1);
     return true;

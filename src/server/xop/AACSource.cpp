@@ -78,7 +78,7 @@ string AACSource::getAttribute()  // RFC 3640
 
 #define ADTS_SIZE 7
 #define AU_SIZE 4
-bool AACSource::handleFrame(MediaChannelId channelId, AVFrame frame)
+bool AACSource::handleFrame(MediaChannelId_t channelId, AVFrame frame)
 {
     if (frame.size > (MAX_RTP_PAYLOAD_SIZE-AU_SIZE))
     {

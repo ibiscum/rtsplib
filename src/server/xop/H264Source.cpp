@@ -43,7 +43,7 @@ string H264Source::getAttribute()
     return string("a=rtpmap:96 H264/90000");
 }
 
-bool H264Source::handleFrame(MediaChannelId channelId, AVFrame frame)
+bool H264Source::handleFrame(MediaChannelId_t channelId, AVFrame frame)
 {
     uint8_t *frameBuf  = frame.buffer;
     uint32_t frameSize = frame.size;

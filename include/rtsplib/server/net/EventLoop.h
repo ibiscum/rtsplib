@@ -24,7 +24,7 @@ namespace xop
 class EventLoop 
 {
     public:
-    EventLoop(int nThreads=1); //std::thread::hardware_concurrency()
+    explicit EventLoop(int nThreads=1); //std::thread::hardware_concurrency()
     virtual ~EventLoop();
 
     void loop();

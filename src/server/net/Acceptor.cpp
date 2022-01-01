@@ -7,7 +7,7 @@
 
 using namespace xop;
 
-Acceptor::Acceptor(EventLoop* eventLoop, std::string ip, uint16_t port)
+Acceptor::Acceptor(EventLoop* eventLoop, const std::string& ip, uint16_t port)
     : _eventLoop(eventLoop)
     , _tcpSocket(new TcpSocket)
 {	

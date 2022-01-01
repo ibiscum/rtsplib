@@ -35,12 +35,12 @@ public:
 
     RtspConnection() = delete;
     RtspConnection(Rtsp *rtspServer, TaskScheduler *taskScheduler, int sockfd);
-    ~RtspConnection();
+    ~RtspConnection() override;
 
-    MediaSessionId getMediaSessionId()
+    MediaSessionId getMediaSessionId() const
     { return _sessionId; }
 
-    TaskScheduler *getTaskScheduler() const 
+    TaskScheduler *getTaskScheduler() const override
     { return _pTaskScheduler; }
 
     void keepAlive()
@@ -77,7 +77,7 @@ private:
     bool onRead(BufferReader& buffer);
     void onClose();
     void handleRtcp(SOCKET sockfd);
-    void handleRtcp(BufferReader& buffer);
+    static void handleRtcp(BufferReader& buffer);
     void sendMessage(std::shared_ptr<char> buf, uint32_t size);
     bool handleRtspRequest(BufferReader& buffer);
     bool handleRtspResponse(BufferReader& buffer);
@@ -87,7 +87,7 @@ private:
     void handleCmdSetup();
     void handleCmdPlay();
     void handleCmdTeardown();
-    void handleCmdGetParamter();
+    void handleCmdGetParameter();
 
     void sendOptions(ConnectionMode mode= RTSP_SERVER);
     void sendDescribe();
@@ -95,7 +95,7 @@ private:
     void sendSetup();
     void handleRecord();
 
-    std::atomic_int _aliveCount;
+    std::atomic_int _aliveCount{};
 
     Rtsp* _pRtsp = nullptr;
     xop::TaskScheduler *_pTaskScheduler = nullptr;

@@ -20,7 +20,7 @@ bool RtspRequest::parseRequest(BufferReader *buffer)
     }
     
     bool ret = true;
-    while(1)
+    while(true)
     {
         if(_state == kParseRequestLine)
         {
@@ -384,7 +384,7 @@ uint16_t RtspRequest::getRtcpPort() const
     return 0;
 }
 
-int RtspRequest::buildOptionRes(const char* buf, int bufSize)
+int RtspRequest::buildOptionRes(const char* buf, int bufSize) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -397,7 +397,7 @@ int RtspRequest::buildOptionRes(const char* buf, int bufSize)
     return strlen(buf);
 }
 
-int RtspRequest::buildDescribeRes(const char* buf, int bufSize, const char* strSdp)
+int RtspRequest::buildDescribeRes(const char* buf, int bufSize, const char* strSdp) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -414,7 +414,7 @@ int RtspRequest::buildDescribeRes(const char* buf, int bufSize, const char* strS
     return strlen(buf);
 }
 
-int RtspRequest::buildSetupMulticastRes(const char* buf, int bufSize, const char* strMulticastIp, uint16_t port, uint32_t sessionId)
+int RtspRequest::buildSetupMulticastRes(const char* buf, int bufSize, const char* strMulticastIp, uint16_t port, uint32_t sessionId) const
 {	
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -432,7 +432,7 @@ int RtspRequest::buildSetupMulticastRes(const char* buf, int bufSize, const char
     return strlen(buf);
 }
 
-int RtspRequest::buildSetupUdpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn,uint32_t sessionId)
+int RtspRequest::buildSetupUdpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn,uint32_t sessionId) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -451,7 +451,7 @@ int RtspRequest::buildSetupUdpRes(const char* buf, int bufSize, uint16_t rtpChn,
     return strlen(buf);
 }
 
-int RtspRequest::buildSetupTcpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn, uint32_t sessionId)
+int RtspRequest::buildSetupTcpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn, uint32_t sessionId) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -467,7 +467,7 @@ int RtspRequest::buildSetupTcpRes(const char* buf, int bufSize, uint16_t rtpChn,
     return strlen(buf);
 }
 
-int RtspRequest::buildPlayRes(const char* buf, int bufSize, const char* rtpInfo, uint32_t sessionId)
+int RtspRequest::buildPlayRes(const char* buf, int bufSize, const char* rtpInfo, uint32_t sessionId) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -487,7 +487,7 @@ int RtspRequest::buildPlayRes(const char* buf, int bufSize, const char* rtpInfo,
     return strlen(buf);
 }
 
-int RtspRequest::buildTeardownRes(const char* buf, int bufSize, uint32_t sessionId)
+int RtspRequest::buildTeardownRes(const char* buf, int bufSize, uint32_t sessionId) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -501,7 +501,7 @@ int RtspRequest::buildTeardownRes(const char* buf, int bufSize, uint32_t session
     return strlen(buf);
 }
 
-int RtspRequest::buildGetParamterRes(const char* buf, int bufSize, uint32_t sessionId)
+int RtspRequest::buildGetParameterRes(const char* buf, int bufSize, uint32_t sessionId) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -515,7 +515,7 @@ int RtspRequest::buildGetParamterRes(const char* buf, int bufSize, uint32_t sess
     return strlen(buf);
 }
 
-int RtspRequest::buildNotFoundRes(const char* buf, int bufSize)
+int RtspRequest::buildNotFoundRes(const char* buf, int bufSize) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -527,7 +527,7 @@ int RtspRequest::buildNotFoundRes(const char* buf, int bufSize)
     return strlen(buf);
 }
 
-int RtspRequest::buildServerErrorRes(const char* buf, int bufSize)
+int RtspRequest::buildServerErrorRes(const char* buf, int bufSize) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -539,7 +539,7 @@ int RtspRequest::buildServerErrorRes(const char* buf, int bufSize)
     return strlen(buf);
 }
 
-int RtspRequest::buildUnsupportedRes(const char* buf, int bufSize)
+int RtspRequest::buildUnsupportedRes(const char* buf, int bufSize) const
 {
     memset((void*)buf, 0, bufSize);
     snprintf((char*)buf, bufSize,
@@ -553,15 +553,15 @@ int RtspRequest::buildUnsupportedRes(const char* buf, int bufSize)
 
 bool RtspResponse::parseResponse(xop::BufferReader *buffer)
 {
-    if (strstr(buffer->peek(), "\r\n\r\n") != NULL)
+    if (strstr(buffer->peek(), "\r\n\r\n") != nullptr)
     {
-        if (strstr(buffer->peek(), "OK") == NULL)
+        if (strstr(buffer->peek(), "OK") == nullptr)
         {
             return false;
         }
 
         char* ptr = strstr(buffer->peek(), "Session");
-        if (ptr != NULL)
+        if (ptr != nullptr)
         {
             char sessionId[50] = {0};
             if (sscanf(ptr, "%*[^:]: %s", sessionId) == 1)

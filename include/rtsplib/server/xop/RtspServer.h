@@ -19,20 +19,20 @@ class RtspConnection;
 class RtspServer : public Rtsp, public TcpServer
 {
 public:
-    RtspServer(xop::EventLoop *loop, std::string ip, uint16_t port = 554);
-    ~RtspServer();
+    RtspServer(xop::EventLoop *loop, const std::string& ip, uint16_t port = 554);
+    ~RtspServer() override;
 
-    MediaSessionId addMediaSession(MediaSession* session);
-    void removeMediaSession(MediaSessionId sessionId);
+    MediaSessionId addMediaSession(MediaSession* session) override;
+    int removeMediaSession(MediaSessionId sessionId) override;
 
-    bool pushFrame(MediaSessionId sessionId, MediaChannelId channelId, AVFrame frame);
+    bool pushFrame(MediaSessionId sessionId, MediaChannelId_t channelId, AVFrame frame) override;
 
 private:
     friend class RtspConnection;
-    MediaSessionPtr lookMediaSession(const std::string& suffix);
-    MediaSessionPtr lookMediaSession(MediaSessionId sessionId);
+    MediaSessionPtr lookMediaSession(const std::string& suffix) override;
+    MediaSessionPtr lookMediaSession(MediaSessionId sessionId) override;
 
-    virtual TcpConnection::Ptr newConnection(SOCKET sockfd);
+    TcpConnection::Ptr newConnection(SOCKET sockfd) override;
 
     std::mutex _mtxSessionMap;
     std::unordered_map<MediaSessionId, std::shared_ptr<MediaSession>> _mediaSessions;

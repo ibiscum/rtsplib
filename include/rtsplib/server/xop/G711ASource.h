@@ -14,7 +14,7 @@ class G711ASource : public MediaSource
 {
 public:
     static G711ASource* createNew();
-    virtual ~G711ASource();
+    ~G711ASource() override;
 
     uint32_t getSampleRate() const
     { return _sampleRate; }
@@ -22,11 +22,13 @@ public:
     uint32_t getChannels() const
     { return _channels; }
 
-    virtual std::string getMediaDescription(uint16_t port=0);
+    //std::string getMediaDescription(uint16_t port=0) override;
+    std::string getMediaDescription(uint16_t port) override;
 
-    virtual std::string getAttribute();
 
-    bool handleFrame(MediaChannelId channelId, AVFrame frame);
+    std::string getAttribute() override;
+
+    bool handleFrame(MediaChannelId_t channelId, AVFrame frame) override;
 
     static uint32_t getTimeStamp();
 

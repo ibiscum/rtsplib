@@ -13,23 +13,23 @@ class RtspConnection;
 class RtspPusher : public Rtsp
 {
 public:
-    RtspPusher(xop::EventLoop *eventLoop);
-    ~RtspPusher();
+    explicit RtspPusher(xop::EventLoop *eventLoop);
+    ~RtspPusher() override;
 
-    MediaSessionId addMediaSession(MediaSession* session);
-    void removeMediaSession(MediaSessionId sessionId);
+    MediaSessionId addMediaSession(MediaSession* session) override;
+    int removeMediaSession(MediaSessionId sessionId) override;
 
-    int openUrl(std::string url);
+    int openUrl(const std::string& url);
     void close();
 
-    bool pushFrame(MediaSessionId sessionId, MediaChannelId channelId, AVFrame frame);
+    bool pushFrame(MediaSessionId sessionId, MediaChannelId_t channelId, AVFrame frame) override;
 
     bool isConnected() const
-    { return (_connections.size() > 0); }
+    { return (!_connections.empty()); }
 
 private:
     friend class RtspConnection;
-    MediaSessionPtr lookMediaSession(MediaSessionId sessionId);
+    MediaSessionPtr lookMediaSession(MediaSessionId sessionId) override;
 
     std::shared_ptr<RtspConnection> newConnection(SOCKET sockfd);
     void removeConnection(SOCKET sockfd);

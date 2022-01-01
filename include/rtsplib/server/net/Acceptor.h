@@ -16,7 +16,7 @@ class EventLoop;
 class Acceptor
 {
 public:	
-    Acceptor(EventLoop* eventLoop, std::string ip, uint16_t port);
+    Acceptor(EventLoop* eventLoop, const std::string& ip, uint16_t port);
     ~Acceptor();
 
     void setNewConnectionCallback(const NewConnectionCallback& cb)
@@ -40,6 +40,6 @@ private:
 
 }
 
-#endif  //
+#endif  //XOP_ACCEPTOR_H
 
 

@@ -17,11 +17,11 @@
 #                                                                                   #
 #  * The software is permitted to be used internally only by the research group     #
 #    MITI and CAMPAR and any associated/collaborating groups and/or individuals.    #
-#  * The software is provided for your internal use only and you may                #
+#  * The software is provided for your internal use only, and you may                #
 #    not sell, rent, lease or sublicense the software to any other entity           #
 #    without specific prior written permission.                                     #
 #    You acknowledge that the software in source form remains a confidential        #
-#    trade secret of the research group MITI and therefore you agree not to         #
+#    trade secret of the research group MITI, and therefore you agree not to         #
 #    attempt to reverse-engineer, decompile, disassemble, or otherwise develop      #
 #    source code for the software or knowingly allow others to do so.               #
 #  * Redistributions of source code must retain the above copyright notice,         #

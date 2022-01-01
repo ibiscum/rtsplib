@@ -22,7 +22,7 @@ public:
     TcpConnection(TaskScheduler *taskScheduler, int sockfd);
     virtual ~TcpConnection();
 
-    TaskScheduler* getTaskScheduler() const 
+    virtual TaskScheduler* getTaskScheduler() const
     { return _taskScheduler; }
 
     void setReadCallback(const ReadCallback& cb)

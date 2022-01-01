@@ -16,13 +16,13 @@ template <typename T>
 class RingBuffer
 {
 public:
-    RingBuffer(unsigned capacity=60)
+    explicit RingBuffer(unsigned capacity=60)
         : _buffer(capacity)
         , _capacity(capacity)
         , _numDatas(0)
     { }
 	
-    ~RingBuffer() {	}
+    ~RingBuffer() = default;
 
     bool push(const T& data) { return pushData(std::forward<T>(data)); } 	
     bool push(T&& data) { return pushData(data); } 
@@ -40,8 +40,8 @@ public:
         return false;
     }	
 
-    bool isFull()  const { return ((_numDatas==_capacity)?true:false); }	
-    bool isEmpty() const { return ((_numDatas==0)?true:false); }
+    bool isFull()  const { return (_numDatas == _capacity); }
+    bool isEmpty() const { return (_numDatas == 0); }
     int size() const { return _numDatas; }
 	
 private:		

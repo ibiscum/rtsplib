@@ -38,7 +38,7 @@ RtpConnection::~RtpConnection() {
 
 int RtpConnection::getId() const { return _rtspConnection->getId(); }
 
-bool RtpConnection::setupRtpOverTcp(MediaChannelId channelId,
+bool RtpConnection::setupRtpOverTcp(MediaChannelId_t channelId,
                                     uint16_t rtpChannel, uint16_t rtcpChannel) {
   _mediaChannelInfo[channelId].rtpChannel = rtpChannel;
   _mediaChannelInfo[channelId].rtcpChannel = rtcpChannel;
@@ -50,7 +50,7 @@ bool RtpConnection::setupRtpOverTcp(MediaChannelId channelId,
   return true;
 }
 
-bool RtpConnection::setupRtpOverUdp(MediaChannelId channelId, uint16_t rtpPort,
+bool RtpConnection::setupRtpOverUdp(MediaChannelId_t channelId, uint16_t rtpPort,
                                     uint16_t rtcpPort) {
   if (SocketUtil::getPeerAddr(_rtspConnection->fd(), &_peerAddr) < 0) {
     return false;
@@ -103,7 +103,7 @@ bool RtpConnection::setupRtpOverUdp(MediaChannelId channelId, uint16_t rtpPort,
   return true;
 }
 
-bool RtpConnection::setupRtpOverMulticast(MediaChannelId channelId,
+bool RtpConnection::setupRtpOverMulticast(MediaChannelId_t channelId,
                                           const std::string &ip,
                                           uint16_t port) {
   std::random_device rd;
@@ -161,7 +161,7 @@ void RtpConnection::teardown() {
   }
 }
 
-string RtpConnection::getMulticastIp(MediaChannelId channelId) const {
+string RtpConnection::getMulticastIp(MediaChannelId_t channelId) const {
   return std::string(inet_ntoa(_peerRtpAddr[channelId].sin_addr));
 }
 
@@ -197,7 +197,7 @@ void RtpConnection::setFrameType(uint8_t frameType) {
   }
 }
 
-void RtpConnection::setRtpHeader(MediaChannelId channelId, const RtpPacket& pkt) {
+void RtpConnection::setRtpHeader(MediaChannelId_t channelId, const RtpPacket& pkt) {
   if ((_mediaChannelInfo[channelId].isPlay ||
        _mediaChannelInfo[channelId].isRecord) &&
       (_hasIDRFrame || _frameType == kGOPCache)) {
@@ -210,7 +210,7 @@ void RtpConnection::setRtpHeader(MediaChannelId channelId, const RtpPacket& pkt)
   }
 }
 
-int RtpConnection::sendRtpPacket(MediaChannelId channelId, const RtpPacket& pkt, bool isGOPCache) {
+int RtpConnection::sendRtpPacket(MediaChannelId_t channelId, const RtpPacket& pkt, bool isGOPCache) {
   if (_isClosed) {
     return -1;
   }
@@ -249,7 +249,7 @@ int RtpConnection::sendRtpPacket(MediaChannelId channelId, const RtpPacket& pkt,
   return ret ? 0 : -1;
 }
 
-int RtpConnection::sendRtpOverTcp(MediaChannelId channelId, const RtpPacket& pkt) {
+int RtpConnection::sendRtpOverTcp(MediaChannelId_t channelId, const RtpPacket& pkt) {
   uint8_t *rtpPktPtr = pkt.data.get();
   rtpPktPtr[0] = '$';
   rtpPktPtr[1] = (char)_mediaChannelInfo[channelId].rtpChannel;
@@ -260,7 +260,7 @@ int RtpConnection::sendRtpOverTcp(MediaChannelId channelId, const RtpPacket& pkt
   return pkt.size;
 }
 
-int RtpConnection::sendRtpOverUdp(MediaChannelId channelId, const RtpPacket& pkt) {
+int RtpConnection::sendRtpOverUdp(MediaChannelId_t channelId, const RtpPacket& pkt) {
   //_mediaChannelInfo[channelId].octetCount  += pktSize;
   //_mediaChannelInfo[channelId].packetCount += 1;
 

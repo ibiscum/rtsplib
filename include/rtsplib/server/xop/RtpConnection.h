@@ -21,45 +21,45 @@ class RtspConnection;
 class RtpConnection
 {
 public:
-    RtpConnection(RtspConnection* rtspConnection);
+    explicit RtpConnection(RtspConnection* rtspConnection);
     virtual ~RtpConnection();
 
-    void setClockRate(MediaChannelId channelId, uint32_t clockRate)
+    void setClockRate(MediaChannelId_t channelId, uint32_t clockRate)
     { _mediaChannelInfo[channelId].clockRate = clockRate; }
 
-    void setPayloadType(MediaChannelId channelId, uint32_t payload)
+    void setPayloadType(MediaChannelId_t channelId, uint32_t payload)
     { _mediaChannelInfo[channelId].rtpHeader.payload = payload; }
 
-    bool setupRtpOverTcp(MediaChannelId channelId, uint16_t rtpChannel, uint16_t rtcpChannel);
-    bool setupRtpOverUdp(MediaChannelId channelId, uint16_t rtpPort, uint16_t rtcpPort);
-    bool setupRtpOverMulticast(MediaChannelId channelId, const std::string& ip, uint16_t port);
+    bool setupRtpOverTcp(MediaChannelId_t channelId, uint16_t rtpChannel, uint16_t rtcpChannel);
+    bool setupRtpOverUdp(MediaChannelId_t channelId, uint16_t rtpPort, uint16_t rtcpPort);
+    bool setupRtpOverMulticast(MediaChannelId_t channelId, const std::string& ip, uint16_t port);
 
     uint32_t getRtpSessionId() const
     { return (uint32_t)((size_t)(this)); }
 
-    uint16_t getRtpPort(MediaChannelId channelId) const
+    uint16_t getRtpPort(MediaChannelId_t channelId) const
     { return _localRtpPort[channelId]; }
 
-    uint16_t getRtcpPort(MediaChannelId channelId) const
+    uint16_t getRtcpPort(MediaChannelId_t channelId) const
     { return _localRtcpPort[channelId]; }
 
-    SOCKET getRtcpfd(MediaChannelId channelId)
+    SOCKET getRtcpfd(MediaChannelId_t channelId)
     { return _rtcpfd[channelId]; }
 
     bool isMulticast() const
     { return _isMulticast; }
 
-    bool isSetup(MediaChannelId channelId) const
+    bool isSetup(MediaChannelId_t channelId) const
     { return _mediaChannelInfo[channelId].isSetup; }
 
-    std::string getMulticastIp(MediaChannelId channelId) const;
+    std::string getMulticastIp(MediaChannelId_t channelId) const;
 
     void play();
     void record();
     void teardown();
 
     std::string getRtpInfo(const std::string& rtspUrl);
-    int sendRtpPacket(MediaChannelId channelId, const RtpPacket& pkt, bool isGOPCache = false);
+    int sendRtpPacket(MediaChannelId_t channelId, const RtpPacket& pkt, bool isGOPCache = false);
 
     bool isClosed() const
     { return _isClosed; }
@@ -76,9 +76,9 @@ private:
     friend class RtspConnection;
     friend class MediaSession;
     void setFrameType(uint8_t frameType = 0);
-    void setRtpHeader(MediaChannelId channelId, const RtpPacket& pkt);
-    int sendRtpOverTcp(MediaChannelId channelId, const RtpPacket& pkt);
-    int sendRtpOverUdp(MediaChannelId channelId, const RtpPacket& pkt);
+    void setRtpHeader(MediaChannelId_t channelId, const RtpPacket& pkt);
+    int sendRtpOverTcp(MediaChannelId_t channelId, const RtpPacket& pkt);
+    int sendRtpOverUdp(MediaChannelId_t channelId, const RtpPacket& pkt);
 
     RtspConnection* _rtspConnection;
 

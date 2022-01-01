@@ -11,10 +11,7 @@ RtspPusher::RtspPusher(xop::EventLoop *eventLoop)
 
 }
 
-RtspPusher::~RtspPusher()
-{
-	
-}
+RtspPusher::~RtspPusher() = default;
 
 MediaSessionId RtspPusher::addMediaSession(MediaSession* session)
 {
@@ -23,10 +20,11 @@ MediaSessionId RtspPusher::addMediaSession(MediaSession* session)
     return _mediaSessionPtr->getMediaSessionId();
 }
 
-void RtspPusher::removeMediaSession(MediaSessionId sessionId)
+int RtspPusher::removeMediaSession(MediaSessionId sessionId)
 {
     std::lock_guard<std::mutex> locker(_mutex);
     _mediaSessionPtr = nullptr;
+    return 0;
 }
 
 MediaSessionPtr RtspPusher::lookMediaSession(MediaSessionId sessionId)
@@ -35,7 +33,7 @@ MediaSessionPtr RtspPusher::lookMediaSession(MediaSessionId sessionId)
     return _mediaSessionPtr;
 }
 
-int RtspPusher::openUrl(std::string url)
+int RtspPusher::openUrl(const std::string& url)
 {
     std::lock_guard<std::mutex> lock(_mutex);
     if (!this->parseRtspUrl(url))
@@ -64,7 +62,7 @@ int RtspPusher::openUrl(std::string url)
 void RtspPusher::close()
 {
     std::lock_guard<std::mutex> locker(_mutex);
-    for (auto iter : _connections)
+    for (const auto& iter : _connections)
     {
         iter.second->handleClose();
     }
@@ -74,7 +72,7 @@ void RtspPusher::close()
 std::shared_ptr<RtspConnection> RtspPusher::newConnection(SOCKET sockfd)
 {
     std::shared_ptr<RtspConnection> rtspConn(new RtspConnection(this, _eventLoop->getTaskScheduler().get(), sockfd));
-    rtspConn->setCloseCallback([this](std::shared_ptr<TcpConnection> conn) {
+    rtspConn->setCloseCallback([this](const std::shared_ptr<TcpConnection>& conn) {
         int sockfd = conn->fd();
         if (!_eventLoop->addTriggerEvent([sockfd, this]() {this->removeConnection(sockfd); }))
         {
@@ -93,7 +91,7 @@ void RtspPusher::removeConnection(SOCKET sockfd)
     _connections.erase(sockfd);
 }
 
-bool RtspPusher::pushFrame(MediaSessionId sessionId, MediaChannelId channelId, AVFrame frame)
+bool RtspPusher::pushFrame(MediaSessionId sessionId, MediaChannelId_t channelId, AVFrame frame)
 {
     std::lock_guard<std::mutex> locker(_mutex);
     if (_mediaSessionPtr == nullptr)

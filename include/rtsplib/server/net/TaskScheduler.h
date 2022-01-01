@@ -17,7 +17,7 @@ typedef std::function<void(void)> TriggerEvent;
 class TaskScheduler 
 {
 public:
-    TaskScheduler(int id=1);
+    explicit TaskScheduler(int id=1);
     virtual ~TaskScheduler();
 
     void start();
@@ -48,9 +48,9 @@ protected:
     std::mutex _mutex;
     TimerQueue _timerQueue;
 
-    static const char kTriggetEvent = 1;
+    static const char kTriggerEvent = 1;
     static const char kTimerEvent = 2;
-    static const int kMaxTriggetEvents = 5000;
+    static const int kMaxTriggerEvents = 5000;
 };
 
 }

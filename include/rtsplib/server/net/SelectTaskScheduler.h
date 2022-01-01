@@ -10,7 +10,7 @@
 
 #if defined(__linux) || defined(__linux__) 
 #include <sys/select.h>
-#include <sys/time.h>
+#include <ctime>
 #include <sys/types.h>
 #include <unistd.h>
 #endif
@@ -25,12 +25,12 @@ namespace xop
 class SelectTaskScheduler : public TaskScheduler
 {
 public:
-    SelectTaskScheduler(int id);
-    virtual ~SelectTaskScheduler();
+    explicit SelectTaskScheduler(int id);
+    ~SelectTaskScheduler() override;
 
-    void updateChannel(ChannelPtr channel);
-    void removeChannel(ChannelPtr& channel);
-    bool handleEvent(int timeout);
+    void updateChannel(ChannelPtr channel) override;
+    void removeChannel(ChannelPtr& channel) override;
+    bool handleEvent(int timeout) override;
 	
 private:
     fd_set _fdReadBackup{};

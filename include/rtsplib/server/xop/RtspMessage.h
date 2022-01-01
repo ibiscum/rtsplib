@@ -28,8 +28,7 @@ public:
 
     enum Method
     {
-        OPTIONS, DESCRIBE, SETUP, PLAY, TEARDOWN, GET_PARAMETER, RTCP,
-        NONE, 
+        OPTIONS, DESCRIBE, SETUP, PLAY, TEARDOWN, GET_PARAMETER, RTCP, NONE,
     };
 
     bool parseRequest(xop::BufferReader *buffer);
@@ -58,7 +57,7 @@ public:
     TransportMode getTransportMode() const
     { return _transport; }
 
-    MediaChannelId getChannelId() const
+    MediaChannelId_t getChannelId() const
     { return _channelId; }
 
     uint8_t getRtpChannel() const;
@@ -66,29 +65,29 @@ public:
     uint16_t getRtpPort() const;
     uint16_t getRtcpPort() const;
 
-    int buildOptionRes(const char* buf, int bufSize);
-    int buildDescribeRes(const char* buf, int bufSize, const char* strSdp);
-    int buildSetupMulticastRes(const char* buf, int bufSize, const char* strMulticastIp, uint16_t port, uint32_t sessionId);
-    int buildSetupTcpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn, uint32_t sessionId);
-    int buildSetupUdpRes(const char* buf, int bufSize, uint16_t serRtpChn, uint16_t serRtcpChn, uint32_t sessionId);
-    int buildPlayRes(const char* buf, int bufSize, const char* rtpInfo, uint32_t sessionId);
-    int buildTeardownRes(const char* buf, int bufSize, uint32_t sessionId);
-    int buildGetParamterRes(const char* buf, int bufSize, uint32_t sessionId);
-    int buildNotFoundRes(const char* buf, int bufSize);
-    int buildServerErrorRes(const char* buf, int bufSize);
-    int buildUnsupportedRes(const char* buf, int bufSize);
+    int buildOptionRes(const char* buf, int bufSize) const;
+    int buildDescribeRes(const char* buf, int bufSize, const char* strSdp) const;
+    int buildSetupMulticastRes(const char* buf, int bufSize, const char* strMulticastIp, uint16_t port, uint32_t sessionId) const;
+    int buildSetupTcpRes(const char* buf, int bufSize, uint16_t rtpChn, uint16_t rtcpChn, uint32_t sessionId) const;
+    int buildSetupUdpRes(const char* buf, int bufSize, uint16_t serRtpChn, uint16_t serRtcpChn, uint32_t sessionId) const;
+    int buildPlayRes(const char* buf, int bufSize, const char* rtpInfo, uint32_t sessionId) const;
+    int buildTeardownRes(const char* buf, int bufSize, uint32_t sessionId) const;
+    int buildGetParameterRes(const char* buf, int bufSize, uint32_t sessionId) const;
+    int buildNotFoundRes(const char* buf, int bufSize) const;
+    int buildServerErrorRes(const char* buf, int bufSize) const;
+    int buildUnsupportedRes(const char* buf, int bufSize) const;
 
 private:
     bool parseRequestLine(const char* begin, const char* end);
     bool parseHeadersLine(const char* begin, const char* end);
     bool parseCSeq(std::string& message);
-    bool parseAccept(std::string& message);
+    static bool parseAccept(std::string& message);
     bool parseTransport(std::string& message);
-    bool parseSessionId(std::string& message);
+    static bool parseSessionId(std::string& message);
     bool parseMediaChannel(std::string& message);
 
     Method _method;
-    MediaChannelId _channelId;
+    MediaChannelId_t _channelId;
     TransportMode _transport;
     std::unordered_map<std::string, std::pair<std::string, uint32_t>> _requestLineParam;
     std::unordered_map<std::string, std::pair<std::string, uint32_t>> _headerLineParam;

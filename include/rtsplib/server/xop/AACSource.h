@@ -7,37 +7,36 @@
 #include "MediaSource.h"
 #include "rtp.h"
 
-namespace xop
-{
+namespace xop {
 
-class AACSource : public MediaSource
-{
+class AACSource : public MediaSource {
 public:
-    static AACSource* createNew(uint32_t sampleRate=44100, uint32_t channels=2, bool hasADTS=true);
-    virtual ~AACSource();
+  static AACSource *createNew(uint32_t sampleRate = 44100,
+                              uint32_t channels = 2, bool hasADTS = true);
+  ~AACSource() override;
 
-    uint32_t getSampleRate() const
-    { return _sampleRate; }
+  uint32_t getSampleRate() const { return _sampleRate; }
 
-    uint32_t getChannels() const
-    { return _channels; }
+  uint32_t getChannels() const { return _channels; }
 
-    virtual std::string getMediaDescription(uint16_t port=0);
+  //std::string getMediaDescription(uint16_t port = 0) override;
+  std::string getMediaDescription(uint16_t port) override;
 
-    virtual std::string getAttribute();
 
-    bool handleFrame(MediaChannelId channelId, AVFrame frame);
+  std::string getAttribute() override;
 
-    static uint32_t getTimeStamp(uint32_t sampleRate=44100);
+  bool handleFrame(MediaChannelId_t channelId, AVFrame frame) override;
+
+  static uint32_t getTimeStamp(uint32_t sampleRate = 44100);
 
 private:
-    AACSource(uint32_t sampleRate, uint32_t channels, bool hasADTS);
+  AACSource(uint32_t sampleRate, uint32_t channels, bool hasADTS);
 
-    uint32_t _sampleRate = 44100;  
-    uint32_t _channels = 2;       
-    bool _hasADTS = true;
+  uint32_t _sampleRate = 44100;
+  uint32_t _channels = 2;
+  bool _hasADTS = true;
 };
 
-}
+} // namespace xop
 
 #endif

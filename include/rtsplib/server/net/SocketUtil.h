@@ -32,7 +32,7 @@ public:
 
 }
 
-#endif // _SOCKET_UTIL_H
+#endif // XOP_SOCKET_UTIL_H
 
 
 

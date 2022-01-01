@@ -19,7 +19,7 @@
 #include <net/if.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <errno.h>
+#include <cerrno>
 #include <sys/select.h>
 #define SOCKET int
 #define INVALID_SOCKET  (-1)

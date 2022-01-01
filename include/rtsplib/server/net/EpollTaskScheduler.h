@@ -13,14 +13,14 @@ namespace xop
 class EpollTaskScheduler : public TaskScheduler
 {
 public:
-    EpollTaskScheduler(int id);
-    virtual ~EpollTaskScheduler();
+    explicit EpollTaskScheduler(int id);
+    ~EpollTaskScheduler() override;
 
-    void updateChannel(ChannelPtr channel);
-    void removeChannel(ChannelPtr& channel);
+    void updateChannel(ChannelPtr channel) override;
+    void removeChannel(ChannelPtr& channel) override;
 
     // timeout: ms
-    bool handleEvent(int timeout);
+    bool handleEvent(int timeout) override;
 
 private:
     void update(int operation, ChannelPtr& channel) const;

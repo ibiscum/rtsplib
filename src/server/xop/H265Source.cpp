@@ -43,7 +43,7 @@ string H265Source::getAttribute()
     return {"a=rtpmap:96 H265/90000"};
 }
 
-bool H265Source::handleFrame(MediaChannelId channelId, AVFrame frame)
+bool H265Source::handleFrame(MediaChannelId_t channelId, AVFrame frame)
 {
     uint8_t *frameBuf  = frame.buffer;
     uint32_t frameSize = frame.size;

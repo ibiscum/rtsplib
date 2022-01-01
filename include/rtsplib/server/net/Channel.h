@@ -28,8 +28,8 @@ public:
     typedef std::function<void()> EventCallback;
     
     Channel() = delete;
-    Channel(int fd) : _fd(fd) {};
-    ~Channel() {};
+    explicit Channel(int fd) : _fd(fd) {};
+    ~Channel() = default;;
     
     void setReadCallback(const EventCallback& cb)
     { _readCallback = cb; }

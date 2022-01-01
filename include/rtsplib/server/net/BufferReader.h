@@ -17,7 +17,7 @@ class BufferReader
 {
 public:	
 	static const uint32_t kInitialSize = 2048;
-    BufferReader(uint32_t initialSize = kInitialSize);
+    explicit BufferReader(uint32_t initialSize = kInitialSize);
     ~BufferReader();
 
     uint32_t readableBytes() const
